@@ -81,3 +81,32 @@
 // const list = document.querySelector("li");
 
 // ul.insertBefore(newDiv, list);
+
+// Add new item to list
+var form = document.getElementById('addForm');
+var ul = document.getElementById('items');
+
+form.addEventListener('submit', addItem);
+ul.addEventListener('click', removeItem);
+
+function addItem(e){
+    e.preventDefault();
+    var newItem = document.getElementById('item').value;
+    var li = document.createElement('li');
+    li.className = 'list-group-item';
+    li.appendChild(document.createTextNode(newItem));
+    var deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
+    deleteBtn.appendChild(document.createTextNode('X'));
+    li.appendChild(deleteBtn);
+    ul.appendChild(li);
+}
+
+function removeItem(e){
+    if(e.target.classList.contains('delete')){
+      if(confirm('Are You Sure?')){
+        var li = e.target.parentElement;
+        ul.removeChild(li);
+      }
+    }
+}
