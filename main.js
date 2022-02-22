@@ -83,30 +83,65 @@
 // ul.insertBefore(newDiv, list);
 
 // Add new item to list
-var form = document.getElementById('addForm');
-var ul = document.getElementById('items');
+let form = document.getElementById('addForm');
+let ul = document.getElementById('items');
 
 form.addEventListener('submit', addItem);
 ul.addEventListener('click', removeItem);
 
 function addItem(e){
     e.preventDefault();
-    var newItem = document.getElementById('item').value;
-    var li = document.createElement('li');
+    let newItemName = document.getElementById('item').value;
+    let newItemDesc = document.getElementById('desc').value;
+    let li = document.createElement('li');
     li.className = 'list-group-item';
-    li.appendChild(document.createTextNode(newItem));
-    var deleteBtn = document.createElement('button');
+    let lineBreak = document.createElement('br');
+
+    li.appendChild(document.createTextNode(newItemName));
+    li.appendChild(lineBreak); 
+    li.appendChild(document.createTextNode(newItemDesc));
+    
+
+    let deleteBtn = document.createElement('button');
+    let EditBtn = document.createElement('button');
+    
+
     deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
+    EditBtn.className = 'btn btn-danger btn-sm float-right delete';
+
     deleteBtn.appendChild(document.createTextNode('X'));
+    EditBtn.appendChild(document.createTextNode('Edit'));
+
     li.appendChild(deleteBtn);
+    li.appendChild(EditBtn);
     ul.appendChild(li);
 }
 
 function removeItem(e){
     if(e.target.classList.contains('delete')){
       if(confirm('Are You Sure?')){
-        var li = e.target.parentElement;
+        let li = e.target.parentElement;
         ul.removeChild(li);
       }
     }
 }
+
+// Filter
+var filter = document.getElementById('filter');
+
+filter.addEventListener('keyup', filterItems);
+
+function filterItems(e){
+    let text = e.target.value.toLowerCase();
+    let items = ul.getElementsByTagName('li');
+    Array.from(items).forEach(function(item){
+      console.log(item);  
+      let itemName = item.firstChild.textContent;
+      let itemDesc = item.childNodes[2].textContent;
+      if(itemName.toLowerCase().indexOf(text) != -1 || itemDesc.toLowerCase().indexOf(text) != -1){
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
